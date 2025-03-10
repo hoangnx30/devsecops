@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-config
+  namespace: cloudflared
+data:
+  config.yaml: |
+    tunnel: 8b1f04d9-1efd-4bbf-9e96-31e40c2871f8
+    credentials-file: /etc/cloudflared/credentials/credentials.json
+    loglevel: info
+    protocol: http2
+    metrics: 0.0.0.0:2000
+    ingress:
+      - hostname: argo-workflows.hoangnx.org 
+        service: http://argo-workflows-server.argo.svc.cluster.local:2746
+      - hostname: keycloak.hoangnx.org
+        service: http://keycloak-svc.keycloak.svc.cluster.local:8080
+      - hostname: argo-events-test.hoangnx.org
+        service: http://webhook-eventsource-svc.argo-events.svc.cluster.local:12000
+      - hostname: argocd.hoangnx.org
+        service: http://argo-cd-argocd-server.argocd.svc.cluster.local:443 
+      - service: http_status:404
+

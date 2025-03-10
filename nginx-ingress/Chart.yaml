@@ -1,0 +1,14 @@
+apiVersion: v2
+name: nginx-ingress
+description: A Helm chart for Kubernetes Nginx ingress
+type: application
+version: 0.1.0
+maintainers:
+- email: xuanhoang30071999@gmail.com
+  name: Hoang Nguyen
+
+dependencies:
+- name: ingress-nginx
+  repository: https://kubernetes.github.io/ingress-nginx
+  version: 4.12.0
+

@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-svc
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: keycloak
+  type: ClusterIP
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+  namespace: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.1
+          args: ["start-dev"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: "admin"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "fxk.KDE3vye4gra4edq"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME_STRICT
+              value: "true"
+            - name: KC_HOSTNAME
+              value: "https://keycloak.hoangnx.org"
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://keycloak-db-postgresql-ha-pgpool/postgres"
+            - name: KC_DB_USERNAME
+              value: "postgres"
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-postgresql-ha-postgresql
+                  key: password
+            - name: jgroups.dns.query
+              value: keycloak
+          ports:
+            - name: jgroups
+              containerPort: 7600
+            - name: http
+              containerPort: 8080

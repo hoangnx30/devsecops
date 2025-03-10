@@ -1,0 +1,37 @@
+sealedSecrets:
+  - name: keycloak-client-secret
+    clusterWide: true
+    labels:
+      app.kubernetes.io/part-of: argocd
+    annotations:
+      sealedsecrets.bitnami.com/managed: "true"
+      sealedsecrets.bitnami.com/namespace-wide: "true"
+      sealedsecrets.bitnami.com/cluster-wide: "true"
+    data:
+      oidc.auth0.clientSecret: AgAB2PfUP0n+9amaSdSikByx/8VNlF6qYbKTI1NfeCJaUvhRfPndg2ZATyo2J7ojCRUJJhCOYwxpC+zscjAfW8LeGpU+G++UJCm0xnPatrAARS1TbL8eBciNg6aZhOw7a+ZetDv2B0k2HmfSKFtIvrmORJu2SfZMWCDvdkg1JsoxNDbm649zFkt5Ns8WCCEFSwxbFcH0bCErjPmlVRVU+QnI8gMjMSumJX6TDJYAC2MPj2D+Ax7fT2cz5SzqfWoLbiJaS7/pg4jEv6EgYCoeVVn+lBbRnmZkt8LpEZ5jYbSf2p7keWDkOjXnGJU/iQwdsxTV0F2DRYnb3vygIQ54P75NAGALPwsTjZQ9HzUyVIP5pKns5IvYaBAqVpF6jI71YmloUDGHMy2cgz8iKcmnHlbczVXJTtnJ+QPOhUTz+FT0AP29gIW1hRKsv9orQzJebgA1NWZBbn68XynfKCGUv1rm+BPdT9paqMEZBnqwWRa4DTkPCplLF4FMgFKZKEQ0ir6OvhXaYcDZ8SvMAziAj9A1ny8FFKZU4BfSWrG+QjNrWfTpcA3MgDVQGVP5phwjc9sGOChaEGRq+rLkVO7IMoIwH86RV3sFk4GbLWlOSVWTJj2kFYD6NzrzuhkFGKrnT5DY9Lfawh+Cci02vzsbsySBMnE5UtDvZmrVEENW8nomRz3U+f00R4ObNK6ACcW7Pmkm+aIe78V7ZGThOTjuyymmZiDmS/gCgPnhv8x6sbPKSA==
+
+argo-cd:
+  global:
+    domain: argocd.hoangnx.org
+  configs:
+    params:
+      server.insecure: true
+    cm:
+      oidc.config: |
+        name: Keycloak
+        clientID: argocd
+        issuer: https://keycloak.hoangnx.org/realms/devsecops
+        enablePKCEAuthentication: false
+        clientSecret: $keycloak-client-secret:oidc.auth0.clientSecret
+        requestedScopes: ["openid", "profile", "email", "groups"]
+  rbac: 
+    create: true
+    policy.default: 'role:readonly'
+    policy.csv: |
+      g, argocd-admin, role:argocd-admin
+      g, argocd-readonly, role:argocd-readonly
+    policy.matchMode: glob
+    scopes: '[groups]'
+      
+
+

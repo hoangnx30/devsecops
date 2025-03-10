@@ -1,0 +1,43 @@
+sealedSecrets:
+  - name: keycloak-client-id
+    clusterWide: true
+    annotations:
+      sealedsecrets.bitnami.com/managed: "true"
+      sealedsecrets.bitnami.com/namespace-wide: "true"
+      sealedsecrets.bitnami.com/cluster-wide: "true"
+    data:
+      client-id-key: AgBFxG5XE5T/ZyKy9/aljBjYlqCQ3Hz1f/4/sA+vSMX+U0Zt/HTpiWF0i5pOgZonfXXfY5f3+uiQwWr+ziWWrlh+Litw72vw+KYR11ik2LEUL58EOdRZ1HHCXdGKpvDH+Qyjn82rnds2NlPUBCXII0ANI3NjVOvEYW2AGTY5Y/5eL6oPBpl4VIicRjWlA+4Hxhg88+ZUaW2Mw0ZH8A47VwmHoTXGPpBXr7Fmnd8HK8IkJLijXfRQpy1hegZFvNpLdzRcuvJpj9CQ0O75Nd1KcIcN0yCSwgz/F01arwyLIp3uxa0GnJbpMrrgv44AK/ZBQHZEZGS+o6KQZaG8wOsHFHJhLxy0FVMB6Xfd7nK9cDTly3w2TTEJlo3iTm4/EQ8PgCj2iGpmRydLhjY8litBIkoQN+A0oNByBE+F+Jjb/7E4VEDrIb/Yo5NOflkllHy8pisir6tg6MAUzOQUBeTp9isPmOiuzNukkU645skQf7hETXNrshf09W0dbpf5Z3L9oMXaTlVNIY5yiXD2VlgPZld0hayEVlZfv+TR0VXn1cJrvq/35FSgLoTPr6AtowVRm5aXGOUKNApCndxrhxdpba8dFuU1S96c54iHSuLUFlkCZvLaDeE9Th6VjHmP5xQAUSPh3Z+jnjRP7hPVxB6Hgk1uxjzrHI4s2m+qq1FyQlAiTO82D5LksHpRqgiU7XvE9ChI+E+LdZ1xXW4b/CrlQA==
+  - name: keycloak-client-secret
+    clusterWide: true
+    annotations:
+      sealedsecrets.bitnami.com/managed: "true"
+      sealedsecrets.bitnami.com/namespace-wide: "true"
+      sealedsecrets.bitnami.com/cluster-wide: "true"
+    data:
+      client-secret-key: AgBFKW8taLKCATl/+CTE5ttRPjYqJDMHROgRitCtTZleqfgocJI35WrjPm6r1gME19cDUbxf7HFquch0lD7tCFGH+JC36y7VqBXU4EIZyR/k3kf7ckQaD7l81c5JXD06dibTfW6xMrVNdNVZkcuiVDNcZ37JeQmvM7vmtES051cX1unt99yDRRefxQLgj3FD3Ys4l+5VV9et4QJEQXC3Ds79gGueg1Al1YcptxEEadKl5G+BPGFCPJEJWOp6FQ3GuBLb9RdEuLENOWzoh7TX8XKZeHiV11MuOob2Q+cWCITh21VJpk5OZW5iNEnLrkAuGm0uB3XB4E5GE5v741/DQnh1hJ+aMtAspCdHZTnnVnvaycjDKQRfOcV22gK9+5qM7BZYewGJh2BhwRQv2FnG3OvnvJRDKv6GzeGCnhNgbwx8MNHHE25ndet5efcvtiNMrUzNf2MeQBjmWngVDvc1l7cRYoCwl2zN18vXk1rz8nzA0fyHH6N+T1YyZYF/7BpWomSDSDtBcj2ls2dwKA2/qpNulaLRPDC/wJfMPsygryg966Kk2Tavnsc2qlPfX4PlkeG2Y5qSw+g9CIFf52E4otCp05fvOImH0PdOvnfFWJE+AW4hctMrNOuXIHNf/4l6oXZFtLj3sY4uHd1r3zef5/JJPLjxU/4pzH12X0AyzmVJzmmqMsHup4eFCVSzOM0OMipQjOdGcL8gKDlVQVGbfz8xz6Cgkom5Z5ECmoEBINDaBw==
+
+argo-workflows:
+  server:
+    authModes:
+      - sso
+    sso: 
+      enabled: true
+      issuer: https://keycloak.hoangnx.org/realms/devsecops
+      clientId: 
+        name: keycloak-client-id
+        key: client-id-key
+      clientSecret: 
+        name: keycloak-client-secret
+        key: client-secret-key
+      redirectUrl: https://argo-workflows.hoangnx.org/oauth2/callback
+      scopes:
+        - openid
+        - profile
+        - email
+        - groups
+      rbac:
+        enabled: true
+      sessionExpiry: 24h
+
+
+

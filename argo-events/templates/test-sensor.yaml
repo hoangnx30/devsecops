@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: webhook
+spec:
+  template:
+    serviceAccountName: argo-event-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: webhook
+      eventName: example
+  triggers:
+    - template:
+        name: argo-workflow-trigger
+        argoWorkflow:
+          operation: submit
+          args:
+            - --node-field-selector
+            - phase=abc
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: demo-
+              spec:
+                entrypoint: main
+                arguments:
+                  parameters:
+                    - name: message
+                      # the value will get overridden by event payload from test-dep
+                      value: hello world
+                templates:
+                  - name: main 
+                    inputs:
+                      parameters:
+                        - name: message
+                    container:
+                      image: busybox
+                      command: [echo]
+                      args: ["{{`{{inputs.parameters.message}}`}}"]
+          parameters:
+            - src:
+                dependencyName: test-dep
+                dataKey: body
+              dest: spec.arguments.parameters.0.value

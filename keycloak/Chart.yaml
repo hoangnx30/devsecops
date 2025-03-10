@@ -1,0 +1,9 @@
+apiVersion: v2
+name: keycloak
+description: A Helm chart for KeyCloak
+type: application
+version: 1.0.0
+dependencies:
+- name: postgresql-ha 
+  version: 15.3.0
+  repository: https://charts.bitnami.com/bitnami
