@@ -19,5 +19,7 @@ data:
         service: http://webhook-eventsource-svc.argo-events.svc.cluster.local:12000
       - hostname: argocd.hoangnx.org
         service: http://argo-cd-argocd-server.argocd.svc.cluster.local:443 
+      - hostname: argo-events-github.hoangnx.org
+        service: http://github-eventsource-svc.argo-events.svc.cluster.local:12000
       - service: http_status:404
 

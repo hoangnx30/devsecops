@@ -6,8 +6,7 @@ metadata:
 spec:
   service:
     ports:
-      - name: example
-        port: 12000
+      - port: 12000
         targetPort: 12000
   github:
     example:
@@ -34,12 +33,13 @@ spec:
         # This url must be reachable from outside the cluster.
         # The name for the service is in `<event-source-name>-eventsource-svc` format.
         # You will need to create an Ingress or Openshift Route for the event-source service so that it can be reached from GitHub.
-        url: https://argo-events.hoangnx.org
+        url: https://argo-events-github.hoangnx.org
       # type of events to listen to.
       # following listens to everything, hence *
       # You can find more info on https://developer.github.com/v3/activity/events/types/
       events:
-        - "*"
+        - "push"
+        - "pull_request"
 
       # apiToken refers to K8s secret that stores the github api token
       # if apiToken is provided controller will create webhook on GitHub repo
@@ -60,10 +60,10 @@ spec:
 
       # type of the connection between event-source and Github.
       # You should set it to false to avoid man-in-the-middle and other attacks.
-      insecure: true
+      insecure: false
       # Determines if notifications are sent when the webhook is triggered
       active: true
       # The media type used to serialize the payloads
-      contentType: json
+      contentType: "json"
 
 

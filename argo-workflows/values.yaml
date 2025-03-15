@@ -15,6 +15,14 @@ sealedSecrets:
       sealedsecrets.bitnami.com/cluster-wide: "true"
     data:
       client-secret-key: AgBFKW8taLKCATl/+CTE5ttRPjYqJDMHROgRitCtTZleqfgocJI35WrjPm6r1gME19cDUbxf7HFquch0lD7tCFGH+JC36y7VqBXU4EIZyR/k3kf7ckQaD7l81c5JXD06dibTfW6xMrVNdNVZkcuiVDNcZ37JeQmvM7vmtES051cX1unt99yDRRefxQLgj3FD3Ys4l+5VV9et4QJEQXC3Ds79gGueg1Al1YcptxEEadKl5G+BPGFCPJEJWOp6FQ3GuBLb9RdEuLENOWzoh7TX8XKZeHiV11MuOob2Q+cWCITh21VJpk5OZW5iNEnLrkAuGm0uB3XB4E5GE5v741/DQnh1hJ+aMtAspCdHZTnnVnvaycjDKQRfOcV22gK9+5qM7BZYewGJh2BhwRQv2FnG3OvnvJRDKv6GzeGCnhNgbwx8MNHHE25ndet5efcvtiNMrUzNf2MeQBjmWngVDvc1l7cRYoCwl2zN18vXk1rz8nzA0fyHH6N+T1YyZYF/7BpWomSDSDtBcj2ls2dwKA2/qpNulaLRPDC/wJfMPsygryg966Kk2Tavnsc2qlPfX4PlkeG2Y5qSw+g9CIFf52E4otCp05fvOImH0PdOvnfFWJE+AW4hctMrNOuXIHNf/4l6oXZFtLj3sY4uHd1r3zef5/JJPLjxU/4pzH12X0AyzmVJzmmqMsHup4eFCVSzOM0OMipQjOdGcL8gKDlVQVGbfz8xz6Cgkom5Z5ECmoEBINDaBw==
+  - name: github-access
+    clusterWide: true
+    annotations:
+      sealedsecrets.bitnami.com/managed: "true"
+      sealedsecrets.bitnami.com/namespace-wide: "true"
+      sealedsecrets.bitnami.com/cluster-wide: "true"
+    data:
+      token: AgCWGgA8XXHjvBAT738dXBM5R4Gv7pXbj+ZxPnxMfIpVs8Al6YGndg1wNGEZCnb2aSGANgMclrnFHAB1W/Wi2FtCMgzif2C0y6E4YOmDBWuW2jzFw85oTrmallvXS+MvLn+ukykcOoUf8f10jKkJLG+sx1l9Nx3S1C/6jzjUGfb19aI+PXbU+OxIOQE4ueQw8JldRMOLy8lYCFijtzdBOTLcR7PDRZQt9dIkKAi0AJAHOdiyR2THgRJj8f9Ul2GPU84V6KuswbB54yR3sG8ZZ6HsZbuMRKdO5prSrjx03vpwjlrhu0HbKjQuYvi8bgNHs1gkT9sXJLTj8RCFLUvmyCSuTsBJf7DIGaheH1MvqhI0YvawyxgfQPKEVMgb5KV0sDTS71/RLvKZyT7dlhdUNOdvwdKCk1fBPmzYtyFxTs0zuEUHclFjl828lm3pVoyp5VhROp7l+8pkX+8MZbbbdU6r+D0Ps88oyK8rME7ssRXFlTOGFvcrDISc12+JuqaV1A8wupjhhYADXn5S9mWn+fzwIWNm6kzYPdYhm+1aBvtcm08/eYEJRAUOlGRFgerg6I94TzZ7AZiafFhINxLSmUNBj1oNw8I1YDM9nTJyRA59z01BGQtcln6/uHQtAz/XJ6ZAZ33t27/jR4uAdFV5QB4EBdcaKzIxYDuu2BUT+NZb+NWiO/U9hr4SsSuynJVQ5kR3ITFYGZehpADn0CxIKau6ljA7T7bo01iHARv8zJi89lNABoz14wD2GTKFoMsBaJadQ56u+2fQIGLThZye1xI0DEtuB/j/XlEofNSdkOVAGhM1g61aKDe6iARs7U4=      
 
 argo-workflows:
   server:

@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github
+spec:
+  template:
+    serviceAccountName: argo-event-workflow-sa
+  dependencies:
+    - name: github-payload
+      eventSourceName: github
+      eventName: example
+            
+  triggers:
+    - template:
+        name: github-workflow-trigger
+        k8s:
+          operation: create
+          source: 
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                name: "" 
+                namespace: "argo"
+                labels: 
+              spec:
+                workflowTemplateRef:
+                  name: application-deployment-workflow-template
+                arguments:
+                  parameters:
+                    - name: repository
+                    - name: revision
+                    - name: short-sha
+                    - name: repository-fullname
+                    - name: action
+          parameters:
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- .Input.body.repository.name | lower -}}`}}
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- .Input.body.ref | trimPrefix "refs/heads/" -}}`}}
+              dest: spec.arguments.parameters.1.value
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- .Input.body.head_commit.id | substr 0 7 -}}`}}
+              dest: spec.arguments.parameters.2.value
+            - src:
+                dependencyName: github-payload
+                dataKey: body.repository.full_name
+              dest: spec.arguments.parameters.3.value
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- $event := get .Input.headers "X-GitHub-Event" -}}
+                  {{- if and $event (kindIs "slice" $event) -}}
+                    {{- index $event 0 -}}
+                  {{- else -}}
+                    {{- default "push" $event -}}
+                  {{- end -}}`}}
+              dest: spec.arguments.parameters.4.value
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- $repoName := .Input.body.repository.name | lower -}}
+                  {{- $sha := .Input.body.head_commit.id -}}
+                  {{- printf "%s-%s" $repoName $sha -}}`}}
+              dest: metadata.name
+              operation: append
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- .Input.body.repository.name | lower -}}`}}
+              dest: metadata.labels.repo-name
+            - src:
+                dependencyName: github-payload
+                dataTemplate: >-
+                  {{`{{- .Input.body.head_commit.id -}}`}}
+              dest: metadata.labels.sha
+      retryStrategy:
+        steps: 3
